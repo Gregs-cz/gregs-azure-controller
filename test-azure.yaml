@@ -1,12 +1,27 @@
 ---
-- name: Test Azure Credentials
+- name: Test Azure 
   hosts: all
+  gather_facts: no
   vars:
-    ansible_user: azureuser
-    ansible_connection: azure_rm
+    aad_tenant_id: "<tenant_id>"
   tasks:
-  - name: Display files in home directory
-    shell: ls ~/
-    register: result
-  - debug:
-      var: result.stdout_lines
+  - name: Get Azure AD access token
+    azure_rm_auth:
+      subscription_id: "<subscription_id>"
+      tenant: "{{ aad_tenant_id }}"
+      client_id: "{{ ansible_user }}"
+      secret: "{{ lookup('aws_secret', 'gregs-azure-ad-credentials-resource_manager') }}"
+    register: auth_result
+
+  - name: Get Azure AD users
+    azure_rm_azureaduser_info:
+      tenant: "{{ aad_tenant_id }}"
+      user_principal_name: "*"
+      graph_version: "1.6"
+      ad_user_filter: "AccountEnabled eq true"
+      azure_ad_access_token: "{{ auth_result.access_token }}"
+    register: ad_users
+
+  - name: Print Azure AD users
+    debug:
+      var: ad_users.graph.users
