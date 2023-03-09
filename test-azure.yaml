@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: no
   vars:
-    aad_tenant_id: "<tenant_id>"
+    aad_tenant_id: "6d2a7f88-8169-43e2-86cb-7fd099633466"
   tasks:
   - name: Get Azure AD access token
     azure_rm_auth:
