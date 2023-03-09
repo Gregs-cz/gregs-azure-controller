@@ -1,0 +1,12 @@
+---
+- name: Test Azure Credentials
+  hosts: all
+  vars:
+    ansible_user: azureuser
+    ansible_connection: azure_rm
+  tasks:
+  - name: Display files in home directory
+    shell: ls ~/
+    register: result
+  - debug:
+      var: result.stdout_lines
