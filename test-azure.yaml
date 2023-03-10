@@ -2,6 +2,7 @@
 - name: Test Azure 
   hosts: all
   gather_facts: no
+  connection: local
   vars:
     aad_tenant_id: "6d2a7f88-8169-43e2-86cb-7fd099633466"
   tasks:
