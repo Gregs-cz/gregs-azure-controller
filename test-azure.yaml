@@ -1,6 +1,6 @@
 ---
 - name: Test Azure 
-  hosts: all
+  hosts: localhost
   gather_facts: no
   connection: local
   vars:
